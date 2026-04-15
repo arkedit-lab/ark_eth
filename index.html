@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アーク編集Tech Hub</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg:        #191918;
+    --surface:   #2f2f2f;
+    --border:    rgba(255,255,255,0.1);
+    --text:      rgba(255,255,255,0.95);
+    --text-sub:  rgba(255,255,255,0.55);
+    --accent:    #2383e2;
+}
+
+body {
+    font-family: Inter, -apple-system, "system-ui", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    font-feature-settings: "lnum", "locl" 0;
+    min-height: 100vh;
+}
+
+/* ===== ヘッダー ===== */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: rgba(25,25,24,0.85);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+}
+.logo {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    text-decoration: none;
+}
+.logo span { color: var(--accent); }
+
+/* ===== ヒーロー ===== */
+.hero {
+    text-align: center;
+    padding: 100px 32px 80px;
+    max-width: 760px;
+    margin: 0 auto;
+}
+.hero-label {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(35,131,226,0.1);
+    border: 1px solid rgba(35,131,226,0.25);
+    border-radius: 20px;
+    padding: 4px 14px;
+    margin-bottom: 28px;
+}
+.hero h1 {
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+}
+.hero p {
+    font-size: 18px;
+    color: var(--text-sub);
+    line-height: 1.6;
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+/* ===== ツール一覧 ===== */
+.tools-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px 100px;
+}
+.section-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-sub);
+    margin-bottom: 24px;
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+.tool-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+.tool-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 60%);
+    pointer-events: none;
+}
+.tool-card:hover {
+    border-color: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+}
+
+.tool-icon {
+    font-size: 28px;
+    line-height: 1;
+}
+.tool-name {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+.tool-desc {
+    font-size: 14px;
+    color: var(--text-sub);
+    line-height: 1.6;
+    flex: 1;
+}
+.tool-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+}
+.tag {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-sub);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 2px 8px;
+}
+.tool-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 4px;
+}
+.tool-link svg {
+    transition: transform 0.2s;
+}
+.tool-card:hover .tool-link svg {
+    transform: translateX(3px);
+}
+
+/* ===== フッター ===== */
+footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 40px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-sub);
+}
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 768px) {
+    header { padding: 16px 20px; }
+    .hero { padding: 64px 20px 56px; }
+    .hero p { font-size: 16px; }
+    .tools-section { padding: 0 20px 64px; }
+    .tools-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <a class="logo" href="#">アーク編集<span>Tech Hub</span></a>
+</header>
+
+<section class="hero">
+    <span class="hero-label">無料ツール集</span>
+    <h1>編集作業をもっと<br>スマートに</h1>
+    <p>ブラウザだけで使えるシンプルな編集ツール。インストール不要、すぐに使えます。</p>
+</section>
+
+<section class="tools-section">
+    <p class="section-title">すべてのツール</p>
+    <div class="tools-grid">
+
+        <a class="tool-card" href="https://arkedit-lab.github.io/diff_checker/" target="_blank" rel="noopener">
+            <div class="tool-icon">🔍</div>
+            <div class="tool-name">差分チェックツール</div>
+            <div class="tool-desc">2つのテキストを並べて比較。追加・削除・変更箇所をひと目で確認できます。</div>
+            <div class="tool-tags">
+                <span class="tag">テキスト</span>
+                <span class="tag">比較</span>
+                <span class="tag">ファイル対応</span>
+            </div>
+            <div class="tool-link">
+                使ってみる
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+        </a>
+
+        <a class="tool-card" href="https://arkedit-lab.github.io/pdf_various_converter/" target="_blank" rel="noopener">
+            <div class="tool-icon">📄</div>
+            <div class="tool-name">PDF色々変換くん</div>
+            <div class="tool-desc">PDFの結合・分割・回転・ページ抽出・最適化をまとめて処理できる高機能PDFツール。</div>
+            <div class="tool-tags">
+                <span class="tag">PDF</span>
+                <span class="tag">結合</span>
+                <span class="tag">分割</span>
+                <span class="tag">変換</span>
+            </div>
+            <div class="tool-link">
+                使ってみる
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+        </a>
+
+        <a class="tool-card" href="https://arkedit-lab.github.io/text_analysis/" target="_blank" rel="noopener">
+            <div class="tool-icon">📝</div>
+            <div class="tool-name">文字数チェックツール</div>
+            <div class="tool-desc">テキストの文字数・行数・単語数をリアルタイムで分析。ファイルの読み込みにも対応。</div>
+            <div class="tool-tags">
+                <span class="tag">テキスト</span>
+                <span class="tag">文字数</span>
+                <span class="tag">分析</span>
+            </div>
+            <div class="tool-link">
+                使ってみる
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+        </a>
+
+        <a class="tool-card" href="https://arkedit-lab.github.io/image_resizer" target="_blank" rel="noopener">
+            <div class="tool-icon">🖼️</div>
+            <div class="tool-name">画像リサイズ＆変換ツール</div>
+            <div class="tool-desc">画像のリサイズ・フォーマット変換をブラウザ上で処理。JPG・PNG・WebPなどに対応。</div>
+            <div class="tool-tags">
+                <span class="tag">画像</span>
+                <span class="tag">リサイズ</span>
+                <span class="tag">フォーマット変換</span>
+            </div>
+            <div class="tool-link">
+                使ってみる
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+        </a>
+
+        <a class="tool-card" href="https://arkedit-lab.github.io/thumbnail_tool/" target="_blank" rel="noopener">
+            <div class="tool-icon">🎬</div>
+            <div class="tool-name">動画サムネール抽出ツール</div>
+            <div class="tool-desc">MP4動画から任意の場面をPNG画像として保存。最終フレームや指定時間のキャプチャに対応。</div>
+            <div class="tool-tags">
+                <span class="tag">動画</span>
+                <span class="tag">MP4</span>
+                <span class="tag">サムネール</span>
+            </div>
+            <div class="tool-link">
+                使ってみる
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+        </a>
+
+    </div>
+</section>
+
+<footer>
+    © 2025 アーク編集Tech Hub — すべてのツールはブラウザ上で動作します
+</footer>
+
+</body>
+</html>
